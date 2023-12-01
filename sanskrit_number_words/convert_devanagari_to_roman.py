@@ -3,6 +3,7 @@ class FromSkt:
     Class FromSkt
     This class is used for transliterating from devanagari
     """
+
     __vowels = {
         "अ": "a",
         "आ": "aa",
@@ -47,39 +48,39 @@ class FromSkt:
     }
 
     __consonants = {
-        'क': 'ka', 
-        'ख': 'kha',
-        'ग': 'ga', 
-        'घ': 'gha',
-        'ङ': 'Ga', 
-        'च': 'ca', 
-        'छ': 'cha',
-        'ज': 'ja', 
-        'झ': 'jha',
-        'ञ': 'Ja', 
-        'ट': 'Ta', 
-        'ठ': 'Tha',
-        'ड': 'Da', 
-        'ढ': 'Dha',
-        'ण': 'Na', 
-        'त': 'ta', 
-        'थ': 'tha',
-        'द': 'da', 
-        'ध': 'dha',
-        'न': 'na', 
-        'प': 'pa', 
-        'फ': 'pha',
-        'ब': 'ba', 
-        'भ': 'bha',
-        'म': 'ma', 
-        'य': 'ya', 
-        'र': 'ra', 
-        'ल': 'la', 
-        'व': 'va', 
-        'श': 'za', 
-        'ष': 'Sa', 
-        'स': 'sa', 
-        'ह': 'ha', 
+        "क": "ka",
+        "ख": "kha",
+        "ग": "ga",
+        "घ": "gha",
+        "ङ": "Ga",
+        "च": "ca",
+        "छ": "cha",
+        "ज": "ja",
+        "झ": "jha",
+        "ञ": "Ja",
+        "ट": "Ta",
+        "ठ": "Tha",
+        "ड": "Da",
+        "ढ": "Dha",
+        "ण": "Na",
+        "त": "ta",
+        "थ": "tha",
+        "द": "da",
+        "ध": "dha",
+        "न": "na",
+        "प": "pa",
+        "फ": "pha",
+        "ब": "ba",
+        "भ": "bha",
+        "म": "ma",
+        "य": "ya",
+        "र": "ra",
+        "ल": "la",
+        "व": "va",
+        "श": "za",
+        "ष": "Sa",
+        "स": "sa",
+        "ह": "ha",
     }
 
     @staticmethod
@@ -105,4 +106,4 @@ class FromSkt:
                 res[-1] = res[-1][:-1]
             else:
                 res.append(ch)
-        return ''.join(res)
+        return "".join(res)

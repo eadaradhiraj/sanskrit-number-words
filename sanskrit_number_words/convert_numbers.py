@@ -1,7 +1,27 @@
 from .break_words import BreakWords
 from .convert_devanagari_to_roman import FromSkt
+from typing import Tuple
+
 
 class ConvertNumbers:
+    """Convert number words to actual numbers
+
+    Returns:
+        str or int: returns string or integer output
+    """
+
+    __hindu_nums = {
+        "0": "०",
+        "1": "१",
+        "2": "२",
+        "3": "३",
+        "4": "४",
+        "5": "५",
+        "6": "६",
+        "7": "७",
+        "8": "८",
+        "9": "९",
+    }
 
     __ones = {
         "nava": "9",
@@ -25,28 +45,85 @@ class ConvertNumbers:
         "triMzat": "30",
         "viMzat": "20",
         "daza": "10",
+        "zUnya": "0",
     }
 
-    def __get_digit(wd, digits):
+    @staticmethod
+    def __get_digit(wd: str, digits: dict) -> Tuple[str, str] | None:
+        """Takes a number word and finds its equivalent from a dictionary
+
+        Args:
+            wd (str): string input of a number word
+            digits (dict): takes a dict input to map equivalents
+
+        Returns:
+            tuple or none: returns the equivalent digit and its equivalent or Nothing
+        """
         for dig in digits:
             if dig in wd:
                 return dig, digits[dig]
         return None
 
+    @staticmethod
+    def __get_ten(wd: str) -> Tuple[str, str] | None:
+        """Convert double-digit numbers to equivalent
 
-    def __get_ten(wd):
+        Args:
+            wd (str): number word preferable representing a double-digit number
+
+        Returns:
+            tuple or none: returns the equivalent digit
+                and its equivalent double-digit number or Nothing
+        """
         return ConvertNumbers.__get_digit(wd, ConvertNumbers.__tens)
 
+    @staticmethod
+    def __get_one(wd: str) -> Tuple[str, str] | None:
+        """Convert single-digit numbers to equivalent
 
-    def __get_one(wd):
+        Args:
+            wd (str): number word preferable representing a single-digit number
+
+        Returns:
+            tuple or none: returns the equivalent digit
+                and its equivalent single-digit number or Nothing
+        """
         return ConvertNumbers.__get_digit(wd, ConvertNumbers.__ones)
 
-    def convert(inp_str):
+    @staticmethod
+    def convert(inp_str: str, output_format: str = "integer") -> int | str:
+        """Convert number words into integer or string
+
+        Args:
+            inp_str (str): Number words should be in devanagari format
+            output_format (str, optional): Output format if in devanagari will
+                return devangari numerals,
+                if integer then will return integer type.
+                Defaults to "integer".
+
+        Returns:
+            int | str: Return either integer type or
+                devangari string of the converted output
+        """
         return ConvertNumbers.convert_from_roman(
-            FromSkt.transliterate_from_skt(inp_str)
+            inp_str=FromSkt.transliterate_from_skt(inp_str), output_format=output_format
         )
 
-    def convert_from_roman(inp_str):
+    @staticmethod
+    def convert_from_roman(inp_str: str, output_format: str = "integer") -> int | str:
+        """Convert number words into integer or string
+
+        Args:
+            inp_str (str): Number words should be in roman format
+            output_format (str, optional): Output format
+                if in devanagari will return devangari numerals,
+                if integer then will return integer type.
+                Defaults to "integer".
+
+        Returns:
+            int | str: Return either integer type or
+                devangari string of the converted output
+        """
         sep_wds = BreakWords.get_words(inp_str)
         res_eq = []
         for idx, wd in enumerate(sep_wds):
@@ -56,7 +133,7 @@ class ConvertNumbers:
                 res_eq.append(wd)
                 continue
             elif wd == "minus":
-                if res_eq and res_eq[-1] == '+':
+                if res_eq and res_eq[-1] == "+":
                     res_eq.append("1")
                 if res_eq:
                     res_eq[-1] = f"-{res_eq[-1]}"
@@ -77,4 +154,12 @@ class ConvertNumbers:
             if op.isdigit() and res_eq[idx - 1].isdigit() and idx > 0:
                 final_res_eq.append("*")
             final_res_eq.append(op)
-        return eval("".join(final_res_eq))
+        integer_result = eval("".join(final_res_eq))
+        if output_format == "devanagari":
+            return "".join(
+                [ConvertNumbers.__hindu_nums[ch] for ch in str(integer_result)]
+            )
+        elif output_format == "integer":
+            return integer_result
+        else:
+            return "Invalid output format!!"

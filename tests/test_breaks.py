@@ -1,5 +1,5 @@
 import unittest
-from sanskrit_number_words import BreakWords
+from sanskrit_number_words.break_words import BreakWords
 
 class TestCases(unittest.TestCase):
     def test_breaks(self):
