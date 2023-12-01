@@ -218,3 +218,6 @@ class TestCases(unittest.TestCase):
         self.assertEqual(
             ConvertNumbers.convert(inp_str="षट्त्रिंशदुत्तरनवशतोत्तरनवसहस्र"), 9936
         )
+        self.assertEqual(
+            ConvertNumbers.convert(inp_str="शून्यः"), 0
+        )
