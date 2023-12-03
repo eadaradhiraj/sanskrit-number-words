@@ -126,8 +126,22 @@ class ConvertNumbers:
         """
         sep_wds = BreakWords.get_words(inp_str)
         res_eq = []
+        # The following block is to deal with double digits
+        # also ensures dealing with multiple double digits
         for idx, wd in enumerate(sep_wds):
             ten_in_wd = ConvertNumbers.__get_ten(wd)
+            ten_in_wd_comp = 0
+            ten_in_wd_bool = False
+            if ten_in_wd:
+                ten_in_wd_bool = True
+                ten_in_wd_comp = int(ten_in_wd[1])
+            while ten_in_wd:
+                wd = wd.replace(ten_in_wd[0], "", 1)
+                ten_in_wd = ConvertNumbers.__get_ten(wd)
+                if ten_in_wd:
+                    ten_in_wd_comp *= int(ten_in_wd[1])
+
+            # deal with entries which contain original digits or operators
             curr_eq = ""
             if wd.isdigit() or wd == "+":
                 res_eq.append(wd)
@@ -141,9 +155,13 @@ class ConvertNumbers:
                     res_eq.append("-1")
                 res_eq.append("+")
                 continue
-            if ten_in_wd:
-                wd = wd.replace(ten_in_wd[0], "")
-                curr_eq += ten_in_wd[1]
+
+            # Add tens to the actual equation
+            if ten_in_wd_bool:
+                curr_eq += str(ten_in_wd_comp)
+
+            # The following block is to deal with single digits
+            # also ensures dealing with multiple single digits
             one_in_wd = ConvertNumbers.__get_one(wd)
             one_in_wd_comp = 0
             one_in_wd_bool = False
@@ -151,7 +169,7 @@ class ConvertNumbers:
                 one_in_wd_bool = True
                 one_in_wd_comp = int(one_in_wd[1])
             while one_in_wd:
-                wd = wd.replace(one_in_wd[0], "")
+                wd = wd.replace(one_in_wd[0], "", 1)
                 one_in_wd = ConvertNumbers.__get_one(wd)
                 if one_in_wd:
                     one_in_wd_comp *= int(one_in_wd[1])
@@ -159,16 +177,21 @@ class ConvertNumbers:
                 curr_eq = curr_eq + "+" + str(one_in_wd_comp)
             if curr_eq:
                 res_eq.append(str(eval(curr_eq)))
+
+        # Add up remaining digits
         final_res_eq = []
         for idx, op in enumerate(res_eq):
             if op.isdigit() and res_eq[idx - 1].isdigit() and idx > 0:
                 final_res_eq.append("*")
             final_res_eq.append(op)
         integer_result = eval("".join(final_res_eq))
+
+        # Convert to either devanagari
         if output_format == "devanagari":
             return "".join(
                 [ConvertNumbers.__hindu_nums[ch] for ch in str(integer_result)]
             )
+        # Or to integers
         elif output_format == "integer":
             return integer_result
         else:
