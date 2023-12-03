@@ -4,6 +4,7 @@ from sanskrit_number_words import ConvertNumbers
 
 class TestCases(unittest.TestCase):
     def test_convert_numbers(self):
+        self.assertEqual(ConvertNumbers.convert(inp_str="षट्शतम्"), 600)
         self.assertEqual(ConvertNumbers.convert(inp_str="एकान्नशत"), 99)
         self.assertEqual(ConvertNumbers.convert(inp_str="एकान्नायुत"), 9999)
         self.assertEqual(ConvertNumbers.convert(inp_str="एकोनायुत"), 9999)
@@ -17,7 +18,6 @@ class TestCases(unittest.TestCase):
         self.assertEqual(
             ConvertNumbers.convert(inp_str="अष्टाशीत्यधिकाष्टशताधिकाष्टसहस्र"), 8888
         )
-        self.assertEqual(ConvertNumbers.convert(inp_str="षट्शतम्"), 600)
         self.assertEqual(ConvertNumbers.convert(inp_str="षडुत्तरशतम्"), 106)
         self.assertEqual(ConvertNumbers.convert(inp_str="षडधिकशतम्"), 106)
         self.assertEqual(
@@ -220,4 +220,13 @@ class TestCases(unittest.TestCase):
         )
         self.assertEqual(
             ConvertNumbers.convert(inp_str="शून्यः"), 0
+        )
+        self.assertEqual(
+            ConvertNumbers.convert(inp_str="द्विसप्तानि सहस्राणि"), 14000
+        )
+        self.assertEqual(
+            ConvertNumbers.convert(inp_str="द्विपञ्च"), 10
+        )
+        self.assertEqual(
+            ConvertNumbers.convert(inp_str="विंशतिविंशतिः"), 40
         )

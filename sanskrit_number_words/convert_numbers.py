@@ -97,13 +97,13 @@ class ConvertNumbers:
         Args:
             inp_str (str): Number words should be in devanagari format
             output_format (str, optional): Output format if in devanagari will
-                return devangari numerals,
+                return devanagari numerals,
                 if integer then will return integer type.
                 Defaults to "integer".
 
         Returns:
             int | str: Return either integer type or
-                devangari string of the converted output
+                devanagari string of the converted output
         """
         return ConvertNumbers.convert_from_roman(
             inp_str=FromSkt.transliterate_from_skt(inp_str), output_format=output_format
@@ -116,13 +116,13 @@ class ConvertNumbers:
         Args:
             inp_str (str): Number words should be in roman format
             output_format (str, optional): Output format
-                if in devanagari will return devangari numerals,
+                if in devanagari will return devanagari numerals,
                 if integer then will return integer type.
                 Defaults to "integer".
 
         Returns:
             int | str: Return either integer type or
-                devangari string of the converted output
+                devanagari string of the converted output
         """
         sep_wds = BreakWords.get_words(inp_str)
         res_eq = []
@@ -145,8 +145,18 @@ class ConvertNumbers:
                 wd = wd.replace(ten_in_wd[0], "")
                 curr_eq += ten_in_wd[1]
             one_in_wd = ConvertNumbers.__get_one(wd)
+            one_in_wd_comp = 0
+            one_in_wd_bool = False
             if one_in_wd:
-                curr_eq = curr_eq + "+" + one_in_wd[1]
+                one_in_wd_bool = True
+                one_in_wd_comp = int(one_in_wd[1])
+            while one_in_wd:
+                wd = wd.replace(one_in_wd[0], "")
+                one_in_wd = ConvertNumbers.__get_one(wd)
+                if one_in_wd:
+                    one_in_wd_comp *= int(one_in_wd[1])
+            if one_in_wd_bool:
+                curr_eq = curr_eq + "+" + str(one_in_wd_comp)
             if curr_eq:
                 res_eq.append(str(eval(curr_eq)))
         final_res_eq = []
