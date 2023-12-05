@@ -1,0 +1,4 @@
+# Local development dependencies including docs building, website upload, ASV benchmark
+name: sanskrit-number-words-dev
+channels:
+  - default
